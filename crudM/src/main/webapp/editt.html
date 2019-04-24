@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑</title>
+</head>
+<body>
+<form>
+    <input type="hidden"  id="put0" value="test">
+    姓名：<input type="text" id="put1"><br>
+    性别：<input type="text" id="put2"><br>
+    tel：<input type="text" id="put3"><br>
+    邮箱：<input type="text" id="put4"><br>
+    地址：<input type="text" id="put5"><br>
+    <button type="button"  onclick="submitDo()">提交</button>
+</form>
+
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+
+
+    var idd=window.location.search.split("=");
+    var uid=idd[1];
+    $.ajax({
+        type:"post",
+        url:"selectid",
+        data:{"id":uid},
+        async:false,
+        success: function (msg) {
+            $("#put0").val(msg.id);
+            $("#put1").val(msg.name);
+            $("#put2").val(msg.sex);
+            $("#put3").val(msg.tel);
+            $("#put4").val(msg.email);
+            $("#put5").val(msg.address);
+
+        }
+    });
+
+
+
+    function submitDo(){
+        var id = $("#put0").val();
+        var name = $("#put1").val();
+        var sex = $("#put2").val();
+        var tel = $("#put3").val();
+        var email = $("#put4").val();
+        var address = $("#put5").val();
+
+        $.ajax({
+            type:"post",
+            url:"updatePerson",
+            contentType:"application/json; charset=utf-8",
+            data:JSON.stringify({"id":id, "name":name, "sex":sex, "tel":tel,"email":email,"address":address}),
+            async:false,
+            success:function(msg){
+                alert(msg);
+                window.location.href="indexx.html";
+            },
+            error:function(errorMsg){
+                alert(errorMsg);
+            }
+        });
+    };
+</script>
+</body>
+</html>

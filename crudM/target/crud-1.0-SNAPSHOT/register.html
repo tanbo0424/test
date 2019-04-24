@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册页面</title>
+</head>
+<body>
+<form>
+    用户名<input type="text" name="username" placeholder="请输入用户名"><br>
+    密码<input type="text" name="password" placeholder="请输入密码"><br>
+    身份证号<input type="text" name="idcard" placeholder="请输入身份证号码"><br>
+
+    类型<select id="state">
+    <option value="启动"> 0</option>
+    <option value="关闭">1</option>
+</select><br>
+
+    <button id="reg">提交</button>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script>
+    $(function () {
+        $("#reg").click(function () {
+
+            var username = $("input[name='username']").val();
+            var password = $("input[name='password']").val();
+            var idcard = $("input[name='idcard']").val();
+            var state=$("#type").val();
+
+            $.ajax({
+                type:"post",
+                url:"regUser",
+                data:{"username":username,"password":password,"state":state,"idcard":idcard},
+                success:function (msg) {
+                    if(msg==true){
+                        window.location.href="login.html";
+                    }else{
+                        alert("数据不能为空");
+                    }
+                }
+            });
+
+
+
+        });
+    })
+</script>
+</body>
+</html>

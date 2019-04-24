@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增</title>
+</head>
+<body>
+<form>
+    姓名：<input type="text" id="put1"><br>
+    性别：<input type="text" id="put2"><br>
+    电话：<input type="text"  id="put3"><br>
+    邮箱：<input type="text"  id="put4"><br>
+    地址：<input type="text"  id="put5"><br>
+    <button type="button" onclick="addperson()" >提交</button>
+</form>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+    function addperson(){
+
+        var name = $("#put1").val();
+        var sex = $("#put2").val();
+        var tel = $("#put3").val();
+        var email = $("#put4").val();
+        var address = $("#put5").val();
+        $.ajax({
+            type:"post",
+            url:"addPerson",
+            contentType: "application/json; charset=utf-8",
+            async:false,
+            data:JSON.stringify({"name":name, "sex":sex,"tel":tel,"email":email,"address":address}),
+            success:function(responseText){
+                alert(responseText);
+                window.location.href="indexx.html";
+            },
+            error:function(errorData){
+                alert(errorData);
+            }
+        });
+
+
+    };
+</script>
+</body>
+</html>

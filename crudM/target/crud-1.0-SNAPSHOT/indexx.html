@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>信息</title>
+
+    <style type="text/css">
+        .all{
+            float: left;
+        }
+        #dept{
+
+            width: 300px;
+            height: 1000px;
+            float: left;
+            border: 1px solid black;
+        }
+        #yuangong{
+            width: 1000px;
+            height: 1000px;
+            float: left;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<div class="all">
+    <div id="dept">
+
+    </div>
+    <div id="yuangong">
+        <input type="text" value="请输入查询条件" id="search"><button id="sousou">查询</button>
+
+        <input type="button" value="新增" onclick="register()"/>
+        <button id="deleteall">批量删除</button>
+        <table id="dataTable">
+            <tr>
+                <th></th>
+                <th>id</th>
+                <th width="100">姓名</th>
+                <th>性别</th>
+                <th>电话</th>
+                <th>邮箱</th>
+                <th>地址</th>
+                <th>操作</th>
+            </tr>
+        </table>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script>
+            //jQuery获取所有信息
+            $.ajax({
+                type: "post",
+                url: "selectAll",
+                async: false,
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $.each(data, function (index, element) {
+                        var trStr = "<tr>" +
+                            "<td><input type='checkbox' name='check' value='" + element.id + "'/> </td>"+
+                            "<td>" + element.id + "</td>" +
+                            "<td>" + element.name + "</td>" +
+                            "<td>" + element.sex + "</td>" +
+                            "<td>" + element.tel + "</td>" +
+                            "<td>" + element.email + "</td>" +
+                            "<td>" + element.address + "</td>" +
+                            "<td><button type=\"button\" onclick='upUser(" + element.id + ")'>编辑</button>" +
+                            "<button type=\"button\" onclick='delUser(" + element.id + ")'>删除</button>" +
+                            "</td>" +
+                            "</tr>";
+                        $("#dataTable").append(trStr);
+                    });
+                }
+            });
+            $("#deleteall").click(function(){
+                //$('input:checkbox:checked') 等同于 $('input[type=checkbox]:checked')
+                //意思是选择被选中的checkbox
+                var idArray=new Array();
+                $.each($('input:checkbox:checked'),function(){
+                    window.alert("你选了："+
+                        $('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());
+                    var id=$(this).val();
+                    idArray.push(id);
+                    alert(idArray);
+                    $.ajax({
+                        type: "post",
+                        url: "deleteid",
+                        data: {"id": id},
+                        success: function (responseText) {
+                            alert(responseText);
+                            window.location.href = "indexx.html";
+                        }
+                    });
+                });
+            });
+
+
+
+
+            function upUser(id) {
+                window.location.href = "editt.html?id=" + id;
+            };
+
+            function delUser(id) {
+                $.ajax({
+                    type: "post",
+                    url: "deleteid",
+                    data: {"id": id},
+                    success: function (responseText) {
+                        alert(responseText);
+                        window.location.href = "indexx.html";
+                    }
+                });
+
+            };
+            function register() {
+                window.location.href = "addd.html";
+            }
+            //模糊查询
+            $("#sousou").click(function () {
+
+                alert(1);
+                $("#dataTable").html("");
+                var name = $("#search").val();
+                $.ajax({
+                    type: "post",
+                    url: "selectSexAndName?name="+name,
+                    async: false,
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        $.each(data, function (index, element) {
+                            var trStr = "<tr>" +
+                                "<td>" + element.name + "</td>" +
+                                "<td>" + element.sex + "</td>" +
+                                "<td>" + element.tel + "</td>" +
+                                "<td>" + element.email + "</td>" +
+                                "<td>" + element.address + "</td>" +
+                                "<td><button type=\"button\" onclick='upUser(" + element.id + ")'>编辑</button>" +
+                                "<button type=\"button\" onclick='delUser(" + element.id + ")'>删除</button>" +
+                                "</td>" +
+                                "</tr>";
+                            $("#dataTable").append(trStr);
+                        });
+                    }
+                });
+            })
+            </script>
+    </div>
+</div>
+</body>
+</html>

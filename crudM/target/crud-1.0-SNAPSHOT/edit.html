@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>更改</title>
+</head>
+<body>
+<form>
+    <input type="hidden" class="form-control" id="put0" value="test">
+    <div>
+        修改登陆账号
+        <input type="text" id="put1">
+    </div>
+    <div>
+        修改用户密码
+        <input type="text" id="put2">
+    </div>
+    <div>
+        修改身份证号
+        <input type="text" id="put3">
+    </div>
+    <button type="button" class="btn btn-success" onclick="submitDo()">提交</button>
+</form>
+
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+
+
+        var useridd=window.location.search.split("=");
+        var uid=useridd[1];
+        $.ajax({
+            type:"post",
+            url:"upUser",
+            data:{"uid":uid},
+            async:false,
+            success: function (msg) {
+                $("#put0").val(msg.userid);
+                $("#put1").val(msg.username);
+                $("#put2").val(msg.password);
+                $("#put3").val(msg.idcard);
+
+            }
+        });
+
+
+
+    function submitDo(){
+        var userid = $("#put0").val();
+        var username = $("#put1").val();
+        var password = $("#put2").val();
+        var idcard = $("#put3").val();
+
+
+        $.ajax({
+            type:"post",
+            url:"upUserDo",
+            contentType:"application/json; charset=utf-8",
+            data:JSON.stringify({"userid":userid, "username":username, "password":password, "idcard":idcard}),
+            async:false,
+            success:function(msg){
+                alert(msg);
+                window.location.href="index.html";
+            },
+            error:function(errorMsg){
+                alert(errorMsg);
+            }
+        });
+    };
+</script>
+</body>
+</html>

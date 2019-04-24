@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增页面</title>
+</head>
+<body>
+<form>
+        用户名：<input type="text" id="put1"><br>
+        密码：<input type="text" id="put2"><br>
+        身份证号：<input type="text"  id="put3"><br>
+    <select id="state">
+        <option value="启动">启动</option>
+        <option value="关闭">关闭</option>
+    </select><br>
+        <button type="button" onclick="addUser()" >提交</button>
+</form>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+    function addUser(){
+
+        var username = $("#put1").val();
+        var password = $("#put2").val();
+        var idcrad = $("#put3").val();
+        var state=$("#state").val();
+        $.ajax({
+            type:"post",
+            url:"addUser",
+            contentType: "application/json; charset=utf-8",
+            async:false,
+            data:JSON.stringify({"username":username, "password":password,"state":state,"idcrad":idcrad}),
+            success:function(responseText){
+                alert(responseText);
+                window.location.href="login.html";
+            },
+            error:function(errorData){
+                alert(errorData);
+            }
+        });
+
+
+    };
+</script>
+</body>
+</html>

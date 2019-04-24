@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.person.mapper.PersonMapper">
+    <select id="selectAll" resultType="com.qf.pojo.Person">
+        select * from person
+    </select>
+    <insert id="addPerson" parameterType="com.qf.pojo.Person">
+        insert into person(id,name,sex,tel,email,address) values(SEQ_person_ID.NEXTVAL,#{name,jdbcType=VARCHAR},
+        #{sex,jdbcType=VARCHAR},
+        #{tel,jdbcType=VARCHAR},
+        #{email,jdbcType=VARCHAR},
+        #{address,jdbcType=VARCHAR})
+    </insert>
+    <select id="selectid" parameterType="int" resultType="com.qf.pojo.Person">
+        select * from person where id=#{id}
+    </select>
+
+    <!--改-->
+    <update id = "updatePerson" parameterType="com.qf.pojo.Person">
+        update person set name=#{name},sex=#{sex},tel=#{tel},email=#{email},address=#{address} where id=#{id}
+    </update>
+
+    <!--通过id删-->
+    <delete id = "deleteid" parameterType="int">
+        delete from person where id = #{id}
+    </delete>
+
+    <!--模糊查询-->
+    <select id="selectSexAndName" parameterType="java.lang.String" resultType="com.qf.pojo.Person">
+        SELECT * FROM person
+        <where>
+            NAME LIKE concat(concat('%',#{name}),'%') or SEX LIKE concat(concat('%',#{name}),'%')
+        </where>
+    </select>
+</mapper>

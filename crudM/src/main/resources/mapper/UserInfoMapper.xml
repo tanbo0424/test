@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.userinfo.mapper.UserInfoMapper">
+    <!--查全表-->
+    <select id="getAllUserInfoMap" resultType="com.qf.pojo.UserInfo">
+        SELECT * FROM USER_INFO
+    </select>
+    <!--通过id删-->
+    <delete id = "deleteUserInfoById" parameterType="int">
+        delete from user_info where userid = #{id}
+    </delete>
+    <!--添加-->
+    <insert id="addUserInfo" parameterType="com.qf.pojo.UserInfo">
+      insert into USER_INFO(userid,username,password,state,idcard) VALUES(
+      SEQ_USERPK_ID.NEXTVAL,#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{idcard,jdbcType=VARCHAR})
+    </insert>
+
+    <!--通过id查表-->
+    <select id="selectUserInfoById" parameterType="int" resultType="com.qf.pojo.UserInfo">
+        select * from user_info where userid=#{id}
+    </select>
+    <!--改-->
+    <update id = "updateUserInfoBy" parameterType="com.qf.pojo.UserInfo">
+        update user_info set username=#{username},password=#{password},idcard=#{idcard} where userid=#{userid}
+    </update>
+    <!--查账号密码-->
+    <select id="getUserInfoBy" parameterType="com.qf.pojo.UserInfo" resultType="com.qf.pojo.UserInfo">
+      select * from USER_INFO WHERE USERNAME=#{username} and password=#{password}
+    </select>
+    <!--注册-->
+    <insert id="register" parameterType="com.qf.pojo.UserInfo">
+      insert into USER_INFO(userid,username,password,state,idcard)
+      VALUES(SEQ_USERPK_ID.NEXTVAL,#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{idcard,jdbcType=VARCHAR})
+    </insert>
+</mapper>
